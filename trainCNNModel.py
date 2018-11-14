@@ -70,43 +70,57 @@ X_train, X_test, Y_train, Y_test = skl.train_test_split(faces, ids, test_size=0.
 # --------------------------------------------------------------------------
 # create model sequentially. Add layers on top of previous one
 model = Sequential()
-
+""" Input layer with convolution """
 inputShape = (max_h,max_w,1)
 #conv layer with 34 5x5 filters. 
-model.add(Conv2D(34, (3, 3), padding="same", input_shape=inputShape, data_format="channels_last"))
+model.add(Conv2D(21, (3, 3), padding="same", input_shape=inputShape, data_format="channels_last", use_bias=True, bias_initializer="zeros"))
 #using non-linear function for neuron activation. relu -> output x if x>0, otherwise output 0.
 model.add(Activation("relu"))
 # 2,2 pool/stride means reducing the size of input to the next layer by 2. 
 model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 #regularization. Use drop out to prevent (to an extent) the model from overfitting. It will turn off some neurons while training.
-model.add(Dropout(0.005))
+model.add(Dropout(0.01))
+""" Convolutional layer """
 # second set of CONV => RELU => POOL layers
 # 55  5x5 filters
-model.add(Conv2D(55, (2, 2), padding="same"))
+model.add(Conv2D(34, (2, 2), padding="same", use_bias=True, bias_initializer="zeros"))
 #relu -> output x if x>0, otherwise output 0.
 model.add(Activation("relu"))
 # 2,2 pool/stride means reducing the size of input to the next layer by 2. 
 model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 #regularization. Use drop out to prevent (to an extent) the model from overfitting. It will turn off some neurons while training.
-model.add(Dropout(0.005))
-# third set of CONV => RELU => POOL layers
-# 89 output neurons with 5x5 fitler
-model.add(Conv2D(89, (2, 2), padding="same"))
-#relu -> output x if x>0, otherwise output 0.
-model.add(Activation("relu"))
-# 2,2 pool/stride means reducing the size of input to the next layer by 2. 
-model.add(MaxPooling2D(pool_size=(1, 1), strides=(1, 1)))
-#regularization. Use drop out to prevent (to an extent) the model from overfitting. It will turn off some neurons while training.
-model.add(Dropout(0.005))
-# use this to flatten into 1-dimensional array. 
-# first (and only) set of FC => RELU layers
+model.add(Dropout(0.01))
+""" first hidden layer """
+# flatten inputs to the hidden layer
 model.add(Flatten())
 # Dense is -> fully connected layer of 100 neurons
-model.add(Dense(250))
+model.add(Dense(50))
 #relu -> output x if x>0, otherwise output 0.
 model.add(Activation("relu"))
 #regularization. Use drop out to prevent (to an extent) the model from overfitting. It will turn off some neurons while training.
-model.add(Dropout(0.005))
+model.add(Dropout(0.01))
+""" Second hidden layer """
+# Dense is -> fully connected layer of 100 neurons
+model.add(Dense(50, use_bias=True, bias_initializer="zeros"))
+#relu -> output x if x>0, otherwise output 0.
+model.add(Activation("relu"))
+#regularization. Use drop out to prevent (to an extent) the model from overfitting. It will turn off some neurons while training.
+model.add(Dropout(0.01))
+""" Third hidden layer """
+# Dense is -> fully connected layer of 100 neurons
+model.add(Dense(50, use_bias=True, bias_initializer="zeros"))
+#relu -> output x if x>0, otherwise output 0.
+model.add(Activation("relu"))
+#regularization. Use drop out to prevent (to an extent) the model from overfitting. It will turn off some neurons while training.
+model.add(Dropout(0.01))
+""" Fourth hidden layer """
+# Dense is -> fully connected layer of 100 neurons
+model.add(Dense(100, use_bias=True, bias_initializer="zeros"))
+#relu -> output x if x>0, otherwise output 0.
+model.add(Activation("relu"))
+#regularization. Use drop out to prevent (to an extent) the model from overfitting. It will turn off some neurons while training.
+model.add(Dropout(0.01))
+""" Output layer """
 # softmax classifier
 model.add(Dense(classes))
 #use softmax for activation for multi-class problem.

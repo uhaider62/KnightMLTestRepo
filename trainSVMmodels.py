@@ -11,7 +11,7 @@ from ML_HelpFunctions import ML_hFunctions
 path = 'dataset'
 
 detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
-Vocab_size = 80
+Vocab_size = 70
 dataset_func = ML_hFunctions
 # --------------------------------------------------------------------------
 """ load and prepare data """
@@ -131,7 +131,7 @@ for types in  [0, 1, 2]:
             # train the selected model on the whole train data set 
             selected_model.train(np.array(X_train), cv2.ml.ROW_SAMPLE, np.array(Y_train))      
             accu,avg_time = dataset_func.validate_model_predict_func('svc',selected_model,X_test,Y_test,classes)
-            vecs = np.array(model.getSupportVectors())
+            vecs = np.array(selected_model.getSupportVectors())
             
             # --------------------------------------------------------------------------
             """ If true accuracy of model is more than 80% then it is in short list of selectable models """
@@ -142,6 +142,8 @@ for types in  [0, 1, 2]:
                 print(kernel_str[types]+", value C "+str(C)+", value gamma "+str(gamma))
                 for i in range(0,kfolds):
                     print ("model valid score with kfold "+str(i)+" is: "+str(crossvalid_models_accur[i]))
+                    vecs = np.array(crossvalidated_models[i].getSupportVectors())
+                    print("Number of SVMs for cross validated model "+str(i)+" is: "+str(len(vecs)))
                 print("Best k-fold cross validation Accuracy: "+str(max_valid_score))
                 print("Test set Accuracy: "+str(accu))
                 print("number of SVs: "+str(len(vecs)))
@@ -156,15 +158,19 @@ for types in  [0, 1, 2]:
             """ Save the final selected model """
             # --------------------------------------------------------------------------  
             if types == 1 and C == 100 and gamma == 0.1:
-                    now = datetime.datetime.now()
-                    print(now)
-                    selected_model.save("SVMmodel_"+str(len(vecs))+"_BoWVocab_"+str(Vocab_size)+str(now)+".xml")    
+                    selected_model.save("SVMmodel_"+str(len(vecs))+"_BoWVocab_"+str(Vocab_size)+"_size_"+str((model_mem_size+vocab_mem_size)/1024)+".xml")    
+                    model_name = ("SVMmodel_"+str(len(vecs))+"_BoWVocab_"+str(Vocab_size)+"_size_"+str((model_mem_size+vocab_mem_size)/1024)+".xml")    
                     #store the vocabulary
-                    fs = cv2.FileStorage("vocab_BoW_SVM"+str(Vocab_size)+str(now)+".yml", cv2.FILE_STORAGE_WRITE) 
+                    fs = cv2.FileStorage("vocab_BoW_SVM_"+str(Vocab_size)+"_size_"+str((vocab_mem_size)/1024)+".yml", cv2.FILE_STORAGE_WRITE)
+                    vocab_name =  ("vocab_BoW_SVM_"+str(Vocab_size)+"_size_"+str((vocab_mem_size)/1024)+".yml",)
                     fs.write(name='matrix', val=vocab)
                     fs.release()
 
-
+        if types == 2 and C > 1000:
+            print("Finished...")
+            print("model kernel=RBF, C=100, gamma=0.1 saved as..."+str(model_name))
+            print("Vocabulary of total words "+str(Vocab_size)+" saved as..."+str(vocab_name))
+            break
 #model.trainAuto(np.array(traindata), cv2.ml.ROW_SAMPLE, np.array(trainlabels))
 os.remove('vocab_BoW_size.yml')
 # Now create a new SVM & load the model:

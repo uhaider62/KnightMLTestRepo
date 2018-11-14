@@ -13,7 +13,7 @@ from keras.utils import plot_model
 # --------------------------------------------------------------------------
 """ Load face recognition model"""
 # --------------------------------------------------------------------------
-model="CNNModel_3C_SF_300FC_v3"
+model="CNNModel_120x120In_2Conv_4HidLay_v1"
 recognizer = load_model(model)
 recognizer.summary()
 

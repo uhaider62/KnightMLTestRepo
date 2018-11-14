@@ -171,7 +171,7 @@ while True:
                 end = time.time()
                 print("prediction time: "+str(end-start))
                 id = np.array(id, 'uint8')
-                a = id[1]
+                predicted_id= id[1]
                 # --------------------------------------------------------------------------
                 """ Run through faces if more than 1 """
                 # --------------------------------------------------------------------------
@@ -181,7 +181,7 @@ while True:
                     # --------------------------------------------------------------------------
                     if tot_samples < 10:
                         
-                        avg_ids[face_count][a+1] = avg_ids[face_count][a+1] + 1
+                        avg_ids[face_count][predicted_id+1] = avg_ids[face_count][predicted_id+1] + 1
 
                         id = names[old_id[face_count]]
                         tot_samples = tot_samples + 1
