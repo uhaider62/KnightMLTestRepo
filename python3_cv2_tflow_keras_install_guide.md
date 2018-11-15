@@ -4,7 +4,8 @@ NOTE: OpenCV version less than 3 should be used
 
 2. Install necessary packages by copy-pasting the following into your terminal
     ```
-    python -m pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose opencv-contrib-python imutils
+    python -m pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose imutils
+	python pip install opencv-contrib-python==3.4.2.16
 	
     python -m pip install --upgrade tensorflow
 	

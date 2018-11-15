@@ -6,8 +6,8 @@ import os
 # --------------------------------------------------------------------------
 """ Load SVM recognition model and find total classes in the model """
 # --------------------------------------------------------------------------
-model_file = "SVMmodel_56_BoWVocab_80.xml"
-recognizer = cv2.ml.SVM_load("SVMmodel_56_BoWVocab_80.xml")
+model_file = "SVMmodel_349_BoWVocab_70_size_330.5439453125.xml"
+recognizer = cv2.ml.SVM_load("SVMmodel_349_BoWVocab_70_size_330.5439453125.xml")
 
 classes=0
 model_info = open(model_file,"r")
@@ -36,7 +36,7 @@ faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 # --------------------------------------------------------------------------
 """ Bag of words vocabulary file """
 # --------------------------------------------------------------------------
-fs = cv2.FileStorage("vocab_BoW_SVM80.yml", cv2.FILE_STORAGE_READ) 
+fs = cv2.FileStorage("vocab_BoW_SVM_70_size_77kb.yml", cv2.FILE_STORAGE_READ) 
 vocab = fs.getNode("matrix")
 vocabulary = vocab.mat()
 # --------------------------------------------------------------------------
@@ -113,7 +113,7 @@ def empty(value):
 id = 0
 classes=classes+1
 data_not_enough = 0
-names = ['unknown', 'Robin', 'usman', 'Gabriel']
+names = ['unknown', 'Robin', 'usman', 'Gabriel', 'Prithvi']
 tot_faces = 3
 avg_ids = np.zeros((3,classes), dtype=np.float)
 old_id = np.zeros((tot_faces,), dtype=np.int)

@@ -13,7 +13,7 @@ from keras.utils import plot_model
 # --------------------------------------------------------------------------
 """ Load face recognition model"""
 # --------------------------------------------------------------------------
-model="CNNModel_120x120In_2Conv_4HidLay_v1"
+model="CNN_4Cls_120x120_2Conv_4HidLay_v2"
 recognizer = load_model(model)
 recognizer.summary()
 
@@ -42,7 +42,7 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 #indiciate id counter
 id = 0
 #names against ids 
-names = ['Robin', 'Usman', 'Gabriel','unknown']
+names = ['Robin', 'Usman', 'Gabriel','Prithvi','unknown']
 
 
 videoFrameWidth = 640

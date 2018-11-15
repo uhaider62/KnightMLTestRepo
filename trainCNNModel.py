@@ -86,8 +86,6 @@ model.add(Dropout(0.01))
 model.add(Conv2D(34, (2, 2), padding="same", use_bias=True, bias_initializer="zeros"))
 #relu -> output x if x>0, otherwise output 0.
 model.add(Activation("relu"))
-# 2,2 pool/stride means reducing the size of input to the next layer by 2. 
-model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 #regularization. Use drop out to prevent (to an extent) the model from overfitting. It will turn off some neurons while training.
 model.add(Dropout(0.01))
 """ first hidden layer """
@@ -122,7 +120,7 @@ model.add(Activation("relu"))
 model.add(Dropout(0.01))
 """ Output layer """
 # softmax classifier
-model.add(Dense(classes))
+model.add(Dense(classes, use_bias=True, bias_initializer="zeros"))
 #use softmax for activation for multi-class problem.
 model.add(Activation("softmax"))
 
